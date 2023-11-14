@@ -75,6 +75,7 @@ def Heston_explicit_bf(kappa, eta, sigma, rho, V0, r, T, dt, S0, I, J, K):
 
     A, B, C, D, E, F = np.zeros_like(U), np.zeros_like(U), np.zeros_like(U), np.zeros_like(U), np.zeros_like(U), np.zeros_like(U)
 
+    U_time = []
     for x in range(nt):
         for i in range(len(i_points)):
             for j in range(len(j_points)):
@@ -103,7 +104,8 @@ def Heston_explicit_bf(kappa, eta, sigma, rho, V0, r, T, dt, S0, I, J, K):
             U_n[i][0] = P*U[i][0] + Q*U[i+1][0] + R*(4*U[i][1] - U[i][2])
         
         U = copy.deepcopy(U_n)
+        U_time.append(copy.deepcopy(U))
         if (x%100 == 0): print("100 steps donee", end="   ")
 
     U = U[0:I + 1, 0:J + 1]
-    return U
+    return U, U_time
